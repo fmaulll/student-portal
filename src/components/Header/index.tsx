@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles({
   root: {
     height: 100,
-    background: "linear-gradient(180deg, #1C4779 51.04%, #345A87 83.33%)",
+    background: "linear-gradient(96.48deg, #1C4779 32.31%, #355B88 70.7%)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -74,11 +74,12 @@ const Header: FC<Props> = ({ items }) => {
                 <Typography
                   style={{
                     fontFamily: "'Encode Sans', sans-serif",
-                    fontSize: 32,
+                    fontSize: 18,
+                    borderBottom: "1px solid #FFFFFF",
                     color: "#FFFFFF",
                   }}
                 >
-                  UNIVERSITY
+                  UNIVERSITY OF PECEL LELE
                 </Typography>
               </Grid>
               <Grid item>
@@ -114,7 +115,7 @@ const Header: FC<Props> = ({ items }) => {
       </Fade>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <UniversityLogo style={{ width: 80 }} />
+          <UniversityLogo style={{ width: 70 }} />
         </Grid>
         <Grid item>
           <IconButton onClick={() => setOpenMenu(true)}>
