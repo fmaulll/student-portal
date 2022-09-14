@@ -1,13 +1,17 @@
 import {
+  Avatar,
   Box,
   Collapse,
   Fade,
   Grid,
   IconButton,
   List,
+  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -15,6 +19,7 @@ import React, { FC, useState } from "react";
 import { ReactComponent as UniversityLogo } from "../../assets/logo/UPL-logo.svg";
 import { ReactComponent as MenuIcon } from "../../assets/icons/Menu.svg";
 import { ReactComponent as CrossIcon } from "../../assets/icons/Cross.svg";
+import { ReactComponent as AccountIcon } from "../../assets/icons/Account.svg";
 import zIndex from "@mui/material/styles/zIndex";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +31,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     padding: "0 20px",
-    boxShadow: "0px 10px 10px 4px rgba(0, 0, 0, 0.25)",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   menu: {
     width: "100%",
@@ -47,13 +52,18 @@ export interface Props {
     icon: JSX.Element;
     url: string;
   }[];
+  profile: {
+    name: string;
+    email: string;
+  };
 }
 
-const Header: FC<Props> = ({ items }) => {
+const Header: FC<Props> = ({ items, profile }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [selectedMenu, setSelectedMenu] = useState<number>(0);
+  const [openProfile, setOpenProfile] = useState<boolean>(false)
 
   return (
     <div className={classes.root}>
@@ -72,9 +82,10 @@ const Header: FC<Props> = ({ items }) => {
             >
               <Grid item>
                 <Typography
-                  style={{
+                  sx={{
                     fontFamily: "'Encode Sans', sans-serif",
                     fontSize: 18,
+                    fontWeight: 700,
                     borderBottom: "1px solid #FFFFFF",
                     color: "#FFFFFF",
                   }}
@@ -92,7 +103,7 @@ const Header: FC<Props> = ({ items }) => {
               <List>
                 {items.map((item) => (
                   <ListItemButton
-                    style={{ margin: "20px 0" }}
+                    sx={{ margin: "20px 0" }}
                     key={item.id}
                     selected={selectedMenu === item.id}
                     onClick={() => {
@@ -104,13 +115,45 @@ const Header: FC<Props> = ({ items }) => {
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText
                       primary={item.title}
-                      style={{ color: "#FFFFFF", fontWeight: 400 }}
+                      sx={{ color: "#FFFFFF", fontWeight: 400 }}
                     />
                   </ListItemButton>
                 ))}
               </List>
             </Grid>
           </Grid>
+          <Grid item xs={12}>
+            <List>
+              <ListItemButton onClick={() => setOpenProfile(true)}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <AccountIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={profile.name}
+                  secondary={profile.email}
+                  sx={{
+                    color: "#FFFFFF",
+                    ".MuiListItemText-secondary": { color: "#FFFFFF" },
+                  }}
+                />
+              </ListItemButton>
+            </List>
+          </Grid>
+          <Menu
+            id="basic-menu"
+            open={openProfile}
+            onClose={() => setOpenProfile(false)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            // sx={{ marginLeft: "200px" }}
+          >
+            <MenuItem onClick={() => {}}>Profile</MenuItem>
+            <MenuItem onClick={() => {}}>My account</MenuItem>
+            <MenuItem onClick={() => {}}>Logout</MenuItem>
+          </Menu>
         </Box>
       </Fade>
       <Grid container alignItems="center" justifyContent="space-between">

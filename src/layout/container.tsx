@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { ReactComponent as DashboardIcon } from "../assets/icons/Dashboard.svg";
@@ -58,22 +58,31 @@ const Container: FC<Props> = ({ children }) => {
   return (
     <div>
       <Grid container>
-        {!matches && (
-          <Grid item xs={2}>
-            <Sidebar items={menus} />
-          </Grid>
-        )}
-        {matches && (
-          <Grid item xs={12}>
-            <Header items={menus} />
-          </Grid>
-        )}
+        <Grid item container xs={!matches ? 2 : 12}>
+          {!matches && (
+            <Grid item xs={2} sx={{ position: "fixed" }}>
+              <Sidebar items={menus} />
+            </Grid>
+          )}
+          {matches && (
+            <Grid item xs={12}>
+              <Header
+                profile={{
+                  name: "Fikri Maulana Ibrahim",
+                  email: "maul2821@gmail.com",
+                }}
+                items={menus}
+              />
+            </Grid>
+          )}
+        </Grid>
         <Grid
           item
           xs={!matches ? 10 : 12}
-          style={{
-            height: !matches ? "100vh" : "calc(100vh-100px)",
-            backgroundColor: "#FFFFFF",
+          sx={{
+            minHeight: !matches ? "100vh" : "calc(100vh-100px)",
+            backgroundColor: "rgb(244, 247, 251)",
+            zIndex: -1,
           }}
         >
           {children}
