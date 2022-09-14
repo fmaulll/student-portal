@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import {
   Avatar,
   Box,
+  Collapse,
   Grid,
   List,
   ListItem,
@@ -13,13 +14,10 @@ import {
   MenuItem,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { ReactComponent as DashboardIcon } from "../../assets/icons/Dashboard.svg";
-import { ReactComponent as AssessmentIcon } from "../../assets/icons/Assessment.svg";
-import { ReactComponent as ArticleIcon } from "../../assets/icons/Article.svg";
-import { ReactComponent as CalendarIcon } from "../../assets/icons/Calendar.svg";
-import { ReactComponent as AnnouncementIcon } from "../../assets/icons/Announcement.svg";
-import { ReactComponent as AccountIcon } from "../../assets/icons/Account.svg";
+import { ReactComponent as AccountIcon } from "../../assets/icons/AccountBox.svg";
 import { ReactComponent as LogoutIcon } from "../../assets/icons/Logout.svg";
+import { ReactComponent as ChevronDown } from "../../assets/icons/ChevronDown.svg";
+import { ReactComponent as ChevronUp } from "../../assets/icons/ChevronUp.svg";
 import { ReactComponent as UniversityLogo } from "../../assets/logo/UPL-logo.svg";
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +29,7 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "flex-start",
     minHeight: "100vh",
+    // position: "fixed",
   },
   logoContainer: {
     display: "flex",
@@ -50,7 +49,7 @@ export interface Props {
   }[];
 }
 
-const Sidebar: FC<Props> = ({items}) => {
+const Sidebar: FC<Props> = ({ items }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [selectedMenu, setSelectedMenu] = useState<Number>(0);
@@ -67,7 +66,7 @@ const Sidebar: FC<Props> = ({items}) => {
           <List>
             {items.map((item) => (
               <ListItemButton
-                style={{ margin: "20px 0" }}
+                sx={{ margin: "20px 0" }}
                 key={item.id}
                 selected={selectedMenu === item.id}
                 onClick={() => {
@@ -78,7 +77,7 @@ const Sidebar: FC<Props> = ({items}) => {
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText
                   primary={item.title}
-                  style={{ color: "#FFFFFF", fontWeight: 400 }}
+                  sx={{ color: "#FFFFFF", fontWeight: 400 }}
                 />
               </ListItemButton>
             ))}
@@ -87,37 +86,42 @@ const Sidebar: FC<Props> = ({items}) => {
       </Grid>
       <Grid container>
         <Grid item xs={12}>
-          <List sx={{ width: "100%", maxWidth: 360 }}>
-            <ListItemButton onClick={() => setOpen(true)}>
-              <ListItemAvatar>
-                <Avatar>
+          <ListItemButton onClick={() => setOpen(!open)}>
+            <ListItemText
+              primary="Fikri Maulana ibrahim"
+              secondary="maul2821@gmail.com"
+              sx={{
+                color: "#FFFFFF",
+                ".MuiListItemText-secondary": { color: "#FFFFFF" },
+              }}
+            />
+            {!open ? <ChevronDown /> : <ChevronUp />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
                   <AccountIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary="Fikri Maulana ibrahim"
-                secondary="maul2821@gmail.com"
-                sx={{
-                  color: "#FFFFFF",
-                  ".MuiListItemText-secondary": { color: "#FFFFFF" },
-                }}
-              />
-            </ListItemButton>
-          </List>
+                </ListItemIcon>
+                <ListItemText
+                  sx={{ color: "#FFFFFF", fontWeight: 400 }}
+                  primary="Profile"
+                />
+              </ListItemButton>
+            </List>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  sx={{ color: "#FFFFFF", fontWeight: 400 }}
+                  primary="Logout"
+                />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </Grid>
-        <Menu
-          id="basic-menu"
-          open={open}
-          onClose={() => setOpen(false)}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-          // sx={{ marginLeft: "200px" }}
-        >
-          <MenuItem onClick={() => {}}>Profile</MenuItem>
-          <MenuItem onClick={() => {}}>My account</MenuItem>
-          <MenuItem onClick={() => {}}>Logout</MenuItem>
-        </Menu>
       </Grid>
     </div>
   );
