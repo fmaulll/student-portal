@@ -16,13 +16,13 @@ export interface Props {
 
 const GPAGraph: FC<Props> = ({ data }) => {
   const classes = useStyles();
-  const [point, setPoint] = useState<number>(0)
+  const [point, setPoint] = useState<number>(0);
   const [progressBar, setProgressBar] = useState<number>(0);
 
-  useEffect(()=>{
-    setPoint(data)
-    setProgressBar((data * 100) / 4)
-  }, [point, progressBar])
+  useEffect(() => {
+    setPoint(data);
+    setProgressBar((data * 100) / 4);
+  }, [point, progressBar]);
 
   return (
     <div style={{ width: "100%" }}>
