@@ -11,8 +11,11 @@ import { makeStyles } from "@mui/styles";
 import { type } from "@testing-library/user-event/dist/type";
 import Axios from "axios";
 import React, { FC, useEffect, useState } from "react";
+import Loader from "../../components/Loader";
 import OverallPoints from "../../components/OverallPoints";
 import StudentCard from "../../components/StudentCard";
+import { useAppDispatch } from "../../hooks";
+import { studentActions } from "../../store/student-slice";
 import { doGetStudentData } from "./ApiServiceDashboard";
 
 const useStyles = makeStyles({
@@ -36,12 +39,23 @@ const Dashboard: FC = () => {
     activityPoint: 0,
     comsevHour: 0,
   });
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    doGetStudentData().then((res) => {
-      setPointInfo(res?.data.pointInfo);
-      console.log(res?.data.pointInfo);
-    });
+    doGetStudentData()
+      .then((res) => {
+        setIsloading(true);
+        if (res?.status === 200) {
+          dispatch(studentActions.getStudentInfo(res?.data));
+          setTimeout(() => {
+            setIsloading(false);
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }, []);
   return (
     <div className={classes.root}>
@@ -86,14 +100,7 @@ const Dashboard: FC = () => {
                   position: "relative",
                 }}
               >
-                <StudentCard
-                  card={{
-                    firstName: "Fikri Maulana",
-                    lastName: "Ibrahim",
-                    major: "Computer Science Student",
-                    nim: 2301897314,
-                  }}
-                />
+                <StudentCard isLoading={isLoading} />
               </Paper>
             </Grid>
           </Grid>
@@ -110,7 +117,7 @@ const Dashboard: FC = () => {
                 position: "relative",
               }}
             >
-              <OverallPoints data={pointInfo} />
+              <OverallPoints isLoading={isLoading} />
             </Paper>
           </Grid>
         </Grid>
