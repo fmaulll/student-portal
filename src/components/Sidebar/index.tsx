@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -47,13 +47,19 @@ export interface Props {
     icon: JSX.Element;
     url: string;
   }[];
+  profile: {
+    name: string;
+    email: string;
+  };
+  onClick: Function
 }
 
-const Sidebar: FC<Props> = ({ items }) => {
+const Sidebar: FC<Props> = ({ items, profile, onClick }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [selectedMenu, setSelectedMenu] = useState<Number>(0);
   const [open, setOpen] = useState<boolean>(false);
+
   return (
     <div className={classes.root}>
       <Grid container>
@@ -88,8 +94,8 @@ const Sidebar: FC<Props> = ({ items }) => {
         <Grid item xs={12}>
           <ListItemButton onClick={() => setOpen(!open)}>
             <ListItemText
-              primary="Fikri Maulana ibrahim"
-              secondary="maul2821@gmail.com"
+              primary={profile.name}
+              secondary={profile.email}
               sx={{
                 color: "#FFFFFF",
                 ".MuiListItemText-secondary": { color: "#FFFFFF" },
@@ -98,28 +104,24 @@ const Sidebar: FC<Props> = ({ items }) => {
             {!open ? <ChevronDown /> : <ChevronUp />}
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <AccountIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ color: "#FFFFFF", fontWeight: 400 }}
-                  primary="Profile"
-                />
-              </ListItemButton>
-            </List>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText
-                  sx={{ color: "#FFFFFF", fontWeight: 400 }}
-                  primary="Logout"
-                />
-              </ListItemButton>
-            </List>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <AccountIcon />
+              </ListItemIcon>
+              <ListItemText
+                sx={{ color: "#FFFFFF", fontWeight: 400 }}
+                primary="Profile"
+              />
+            </ListItemButton>
+            <ListItemButton onClick={()=>onClick()} sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText
+                sx={{ color: "#FFFFFF", fontWeight: 400 }}
+                primary="Logout"
+              />
+            </ListItemButton>
           </Collapse>
         </Grid>
       </Grid>

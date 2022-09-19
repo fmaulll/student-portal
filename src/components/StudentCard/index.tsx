@@ -2,7 +2,7 @@ import { Avatar, Box, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ReactComponent as StudentCardImage } from "../../assets/images/StudentCard.svg";
 import { ReactComponent as AccountIcon } from "../../assets/icons/Account.svg";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useAppSelector } from "../../hooks";
 import Loader from "../Loader";
 
@@ -21,8 +21,9 @@ interface Props {
 }
 
 const StudentCard: FC<Props> = ({ isLoading }) => {
-  const student = useAppSelector((state) => state.student.studentInfo);
+  const student = useAppSelector((state) => state.student.infoCard);
   const classes = useStyles();
+  
   return (
     <div className={classes.root}>
       {isLoading ? (
@@ -35,8 +36,8 @@ const StudentCard: FC<Props> = ({ isLoading }) => {
           }}
         >
           <Avatar sx={{ width: 56, height: 56 }}>
-            {student.firstName.substring(0, 1)}
-            {student.lastName.substring(0, 1)}
+            {student.firstName ? student.firstName.substring(0, 1) : "A"}
+            {student.lastName ? student.lastName.substring(0, 1) : "G"}
           </Avatar>
           <Grid container direction="column" sx={{ marginLeft: "20px" }}>
             <Grid item>
@@ -72,7 +73,7 @@ const StudentCard: FC<Props> = ({ isLoading }) => {
                   color: "#202020",
                 }}
               >
-                {student.major}
+                Undergraduate {student.major} Student
               </Typography>
             </Grid>
           </Grid>

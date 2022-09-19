@@ -1,5 +1,4 @@
 import {
-  Box,
   Divider,
   Grid,
   Paper,
@@ -7,75 +6,82 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { type } from "@testing-library/user-event/dist/type";
-import Axios from "axios";
 import React, { FC, useEffect, useState } from "react";
-import Loader from "../../components/Loader";
 import OverallPoints from "../../components/OverallPoints";
 import StudentCard from "../../components/StudentCard";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { studentActions } from "../../store/student-slice";
-import { doGetStudentData } from "./ApiServiceDashboard";
+import { doGetInfoCard, doGetStudentGrades } from "./ApiServiceDashboard";
 
-const useStyles = makeStyles({
-  root: {
-    padding: "30px 20px",
+const styles = {
+  root: { padding: "30px 20px" },
+  title: {
+    fontWeight: 500,
+    fontSize: 24,
+    color: "#202020",
   },
-});
-
-type pointInfoProps = {
-  gpa: number;
-  activityPoint: number;
-  comsevHour: number;
+  paper: {
+    display: "flex",
+    padding: "20px",
+    alignItems: "center",
+    borderRadius: "10px",
+    position: "relative",
+  },
 };
 
 const Dashboard: FC = () => {
-  const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  const [pointInfo, setPointInfo] = useState<pointInfoProps>({
-    gpa: 0,
-    activityPoint: 0,
-    comsevHour: 0,
-  });
   const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const studentId = useAppSelector((state) => state.student.studentId);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    doGetStudentData()
+    // setIsloading(true);
+    doGetInfoCard(studentId)
       .then((res) => {
-        setIsloading(true);
         if (res?.status === 200) {
-          dispatch(studentActions.getStudentInfo(res?.data));
-          setTimeout(() => {
-            setIsloading(false);
-          }, 2000);
+          dispatch(
+            studentActions.getInfoCard({
+              firstName: res?.data.firstName,
+              lastName: res?.data.lastName,
+              studentId: res?.data.studentId,
+              major: res?.data.major,
+            })
+          );
+          // setIsloading(false);
         }
       })
       .catch((err) => {
         alert(err);
       });
-  }, []);
+
+    doGetStudentGrades(studentId)
+      .then((res) => {
+        if (res?.status === 200) {
+          dispatch(
+            studentActions.getStudentScore({
+              gpa: res?.data.gpa,
+              activityPoint: res?.data.activityPoint,
+              comsevHour: res?.data.comsevHour,
+            })
+          );
+          setIsloading(false);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, [dispatch]);
   return (
-    <div className={classes.root}>
+    <div style={styles.root}>
       <Grid container>
         <Grid item xs={12} sx={{ marginBottom: !matches ? "20px" : "10px" }}>
-          <Typography sx={{ fontWeight: 500, fontSize: 24, color: "#202020" }}>
-            Dashboard
-          </Typography>
+          <Typography sx={styles.title}>Dashboard</Typography>
           <Divider />
         </Grid>
-        <Grid
-          item
-          container
-          spacing={4}
-          sx={
-            {
-              // border: "1px solid red",
-            }
-          }
-        >
+        <Grid item container spacing={4}>
           <Grid
             item
             container
@@ -91,15 +97,7 @@ const Dashboard: FC = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Paper
-                sx={{
-                  display: "flex",
-                  padding: "20px",
-                  alignItems: "center",
-                  borderRadius: "10px",
-                  position: "relative",
-                }}
-              >
+              <Paper sx={styles.paper}>
                 <StudentCard isLoading={isLoading} />
               </Paper>
             </Grid>
@@ -108,15 +106,7 @@ const Dashboard: FC = () => {
             <Typography sx={{ marginBottom: "10px" }}>
               Overall Points
             </Typography>
-            <Paper
-              sx={{
-                display: "flex",
-                padding: "20px",
-                alignItems: "center",
-                borderRadius: "10px",
-                position: "relative",
-              }}
-            >
+            <Paper sx={styles.paper}>
               <OverallPoints isLoading={isLoading} />
             </Paper>
           </Grid>

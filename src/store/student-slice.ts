@@ -2,58 +2,109 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 interface StudentState {
-  studentInfo: {
+  studentId: number;
+  infoCard: {
+    firstName: string;
+    lastName: string;
+    studentId: number;
+    major: string;
+  };
+  profileInfo: {
     firstName: string;
     lastName: string;
     email: string;
-    studentId: number;
-    major: string;
   };
   grades: {
     gpa: number;
     activityPoint: number;
     comsevHour: number;
   };
+  courses: {
+    courseName: string;
+    courseId: string;
+    class: string;
+    progress: number;
+  }[];
 }
 
 const initialState: StudentState = {
-  studentInfo: {
+  studentId: 0,
+  infoCard: {
+    firstName: "",
+    lastName: "",
+    studentId: 0,
+    major: "",
+  },
+  profileInfo: {
     firstName: "",
     lastName: "",
     email: "",
-    studentId: 0,
-    major: "",
   },
   grades: {
     gpa: 0,
     activityPoint: 0,
     comsevHour: 0,
   },
+  courses: [{
+    courseName: "",
+    courseId: "",
+    class: "",
+    progress: 0
+  }]
 };
 
 const studentSlice = createSlice({
   name: "student",
   initialState,
   reducers: {
-    getStudentInfo(state, action) {
+    setStudentId(state, action) {
+      const inputValue = action.payload
+
+      state.studentId = inputValue
+    },
+
+    getStudentId(state) {
+      const id = localStorage.getItem('studentId') || ""
+
+      state.studentId = parseInt(id)
+    },
+
+    getInfoCard(state, action) {
       const student = action.payload;
 
-      state.studentInfo = {
-        firstName: student.studentInfo.firstName,
-        lastName: student.studentInfo.lastName,
-        email: student.studentInfo.email,
-        studentId: student.studentInfo.studentId,
-        major: student.studentInfo.major,
+      state.infoCard = {
+        firstName: student.firstName,
+        lastName: student.lastName,
+        studentId: student.studentId,
+        major: student.major,
       };
+    },
+
+    getProfileInfo(state, action) {
+      const student = action.payload;
+
+      state.profileInfo = {
+        firstName: student.firstName,
+        lastName: student.lastName,
+        email: student.email,
+      };
+    },
+
+    getStudentScore(state, action) {
+      const student = action.payload;
 
       state.grades = {
-        gpa: student.grades.gpa,
-        activityPoint: student.grades.activityPoint,
-        comsevHour: student.grades.comsevHour,
+        gpa: student.gpa,
+        activityPoint: student.activityPoint,
+        comsevHour: student.comsevHour,
       };
-
-      console.log(student.studentInfo);
     },
+
+    getCourses(state, action) {
+      const course = action.payload;
+
+      state.courses = course;
+    }
   },
 });
 export const studentActions = studentSlice.actions;
