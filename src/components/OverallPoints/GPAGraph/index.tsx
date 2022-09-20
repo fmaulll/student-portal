@@ -38,7 +38,7 @@ const GPAGraph: FC<Props> = ({ data }) => {
         <Grid item xs={12}>
           <Box
             style={{
-              background: "#FF5C00",
+              background: "#f4f7fb",
             }}
           >
             <Box

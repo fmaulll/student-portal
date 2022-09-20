@@ -8,7 +8,7 @@ import { ReactComponent as ArticleIcon } from "../assets/icons/Article.svg";
 import { ReactComponent as CalendarIcon } from "../assets/icons/Calendar.svg";
 import { ReactComponent as AnnouncementIcon } from "../assets/icons/Announcement.svg";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { doGetProfileInfo } from "../containers/Dashboard/ApiServiceDashboard";
+import { doGetProfileInfo } from "../containers/ApiServices";
 import { studentActions } from "../store/student-slice";
 import { useNavigate } from "react-router-dom";
 
@@ -73,7 +73,7 @@ const Container: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (
-      window.location.pathname == "/" ||
+      window.location.pathname === "/" ||
       window.location.pathname === "/login"
     ) {
       setShowSidebar(false);
@@ -138,7 +138,7 @@ const Container: FC<Props> = ({ children }) => {
             xs={!matches ? 10 : 12}
             sx={{
               minHeight: !matches ? "100vh" : "calc(100vh-100px)",
-              backgroundColor: "rgb(244, 247, 251)",
+              backgroundColor: "#f4f7fb",
               zIndex: -1,
             }}
           >

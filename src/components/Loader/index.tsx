@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import React, { FC } from "react";
-import LoaderGif from "../../assets/images/loader.gif";
+import Loading from "../../assets/images/loading.gif";
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +25,7 @@ const Loader: FC<Props> = ({ isLoading }) => {
       {isLoading && (
         <div className={classes.root}>
           {/* <LoaderGif /> */}
-          <img className={classes.gif} src={LoaderGif} />
+          <img className={classes.gif} src={Loading} />
         </div>
       )}
     </>
