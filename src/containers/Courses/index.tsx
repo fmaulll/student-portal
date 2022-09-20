@@ -7,9 +7,10 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect } from "react";
+import CourseBox from "../../components/CourseBox";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { studentActions } from "../../store/student-slice";
-import { doGetCourses } from "../Dashboard/ApiServiceDashboard";
+import { doGetCourses } from "../ApiServices";
 
 const styles = {
   root: { padding: "30px 20px" },
@@ -64,10 +65,7 @@ const Courses = () => {
         >
           {courses.map((course) => (
             <Grid item xs={4}>
-              <Paper sx={styles.paper}>
-                <Typography>{course.courseName}</Typography>
-                <Typography>{course.courseId}</Typography>
-              </Paper>
+              <CourseBox course={course} />
             </Grid>
           ))}
         </Grid>

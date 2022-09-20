@@ -9,7 +9,7 @@ const baseUrl = "http://localhost:4646/student"
 export const doGetProfileInfo = async (studentId: number) => {
   try {
     const result = await Axios({
-      url: `${baseUrl}/getProfileInfo/${6051901232}`,
+      url: `${baseUrl}/getProfileInfo/${studentId}`,
       method: "GET",
       headers: headersSetting,
     });

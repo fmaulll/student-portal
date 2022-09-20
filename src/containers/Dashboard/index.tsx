@@ -11,7 +11,7 @@ import OverallPoints from "../../components/OverallPoints";
 import StudentCard from "../../components/StudentCard";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { studentActions } from "../../store/student-slice";
-import { doGetInfoCard, doGetStudentGrades } from "./ApiServiceDashboard";
+import { doGetInfoCard, doGetStudentGrades } from "../ApiServices";
 
 const styles = {
   root: { padding: "30px 20px" },
@@ -97,18 +97,18 @@ const Dashboard: FC = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Paper sx={styles.paper}>
-                <StudentCard isLoading={isLoading} />
-              </Paper>
+              <StudentCard isLoading={isLoading} />
             </Grid>
           </Grid>
-          <Grid item xs={!matches ? 6 : 12}>
-            <Typography sx={{ marginBottom: "10px" }}>
-              Overall Points
-            </Typography>
-            <Paper sx={styles.paper}>
+          <Grid item container xs={!matches ? 6 : 12}>
+            <Grid item>
+              <Typography sx={{ marginBottom: "10px" }}>
+                Overall Points
+              </Typography>
+            </Grid>
+            <Grid item>
               <OverallPoints isLoading={isLoading} />
-            </Paper>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

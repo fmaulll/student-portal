@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import React, { FC } from "react";
 import ComsevGraph from "./ComsevGraph";
 import GPAGraph from "./GPAGraph";
@@ -10,10 +10,20 @@ export interface Props {
   isLoading: boolean;
 }
 
+const styles = {
+  paper: {
+    display: "flex",
+    padding: "20px",
+    alignItems: "center",
+    borderRadius: "10px",
+    position: "relative",
+  },
+};
+
 const OverallPoints: FC<Props> = ({ isLoading }) => {
   const grades = useAppSelector((state) => state.student.grades);
   return (
-    <div style={{ width: "100%" }}>
+    <Paper sx={styles.paper}>
       {isLoading ? (
         <Loader isLoading={isLoading} />
       ) : (
@@ -29,7 +39,7 @@ const OverallPoints: FC<Props> = ({ isLoading }) => {
           </Grid>
         </Grid>
       )}
-    </div>
+    </Paper>
   );
 };
 
