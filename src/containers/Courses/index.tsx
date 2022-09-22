@@ -1,12 +1,11 @@
 import {
   Divider,
   Grid,
-  Paper,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CourseBox from "../../components/CourseBox";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { studentActions } from "../../store/student-slice";
@@ -34,14 +33,17 @@ const Courses = () => {
   const dispatch = useAppDispatch();
   const studentId = useAppSelector((state) => state.student.studentId);
   const courses = useAppSelector((state) => state.student.courses);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsLoading(true);
     doGetCourses(studentId).then((res) => {
       if (res?.status === 200) {
         dispatch(studentActions.getCourses(res?.data.courses));
+        setIsLoading(false);
       }
     });
-  }, []);
+  }, [studentId, dispatch]);
   return (
     <div style={styles.root}>
       <Grid container>
@@ -65,7 +67,7 @@ const Courses = () => {
         >
           {courses.map((course) => (
             <Grid item xs={4}>
-              <CourseBox course={course} />
+              <CourseBox isLoading={isLoading} course={course} />
             </Grid>
           ))}
         </Grid>

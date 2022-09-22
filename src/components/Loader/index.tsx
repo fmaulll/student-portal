@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   gif: {
-    width: "100px",
+    width: "50px",
   },
 });
 

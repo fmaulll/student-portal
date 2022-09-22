@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { doGetProfileInfo } from "../containers/ApiServices";
 import { studentActions } from "../store/student-slice";
 import { useNavigate } from "react-router-dom";
+import ModalLoader from "../components/ModalLoader";
 
 export interface Props {
   children: any;
@@ -56,6 +57,7 @@ const menus = [
 
 const Container: FC<Props> = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
@@ -78,6 +80,7 @@ const Container: FC<Props> = ({ children }) => {
     ) {
       setShowSidebar(false);
     } else {
+      setIsOpen(true)
       dispatch(studentActions.getStudentId());
       setShowSidebar(true);
       doGetProfileInfo(studentId)
@@ -90,6 +93,9 @@ const Container: FC<Props> = ({ children }) => {
                 email: res?.data.email,
               })
             );
+            setTimeout(()=>{
+              setIsOpen(false)
+            },2000)
           }
         })
         .catch((err) => {
@@ -146,8 +152,9 @@ const Container: FC<Props> = ({ children }) => {
           </Grid>
         </Grid>
       ) : (
-        <div style={{ height: "100vh", background: "#FFFFFF" }}>{children}</div>
+        <div style={{ height: "100vh", background: "#f4f7fb" }}>{children}</div>
       )}
+      <ModalLoader isOpen={isOpen} />
     </div>
   );
 };
