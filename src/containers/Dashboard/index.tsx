@@ -1,7 +1,6 @@
 import {
   Divider,
   Grid,
-  Paper,
   Typography,
   useMediaQuery,
   useTheme,
@@ -38,7 +37,7 @@ const Dashboard: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // setIsloading(true);
+    setIsloading(true);
     doGetInfoCard(studentId)
       .then((res) => {
         if (res?.status === 200) {
@@ -50,7 +49,7 @@ const Dashboard: FC = () => {
               major: res?.data.major,
             })
           );
-          // setIsloading(false);
+          setIsloading(false);
         }
       })
       .catch((err) => {
@@ -73,7 +72,7 @@ const Dashboard: FC = () => {
       .catch((err) => {
         alert(err);
       });
-  }, [dispatch]);
+  }, [studentId, dispatch]);
   return (
     <div style={styles.root}>
       <Grid container>
